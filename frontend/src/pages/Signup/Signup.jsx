@@ -10,7 +10,8 @@ import {
   LinearProgress,
   useNavigate,
   handleChange,
-  registerUser
+  registerUser,
+  validateUserData
 } from './imports'
 
 /**
@@ -23,6 +24,11 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [hasError, setHasError] = useState({
+    name: false,
+    email: false,
+    password: false
+  })
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -33,7 +39,19 @@ const Signup = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
+    const response = validateUserData(userData)
     registerUser(userData, setIsLoading, setUserData, navigate);
+
+    setHasError({
+      name: false,
+      email: false,
+      password: false
+    })
+
+    if(typeof response == "string"){ 
+      const fieldWithError = response.trim().split(" ")[0].toLowerCase()
+      setHasError(prevState => ({ ...prevState, [fieldWithError]: true }));
+    }
   };
 
   return (
@@ -44,7 +62,7 @@ const Signup = () => {
           <div className={styles.flexColumn}>
             <label>Name</label>
           </div>
-          <div className={styles.inputForm}>
+          <div className={`${styles.inputForm} ${hasError.name && styles.inputError}`}>
             <FiUser className={styles.icon} />
             <input
               type="text"
@@ -53,14 +71,13 @@ const Signup = () => {
               name="name"
               value={userData.name}
               onChange={(event) => handleChange(event, setUserData)}
-              required
             />
           </div>
 
           <div className={styles.flexColumn}>
             <label>Email</label>
           </div>
-          <div className={styles.inputForm}>
+          <div className={`${styles.inputForm} ${hasError.email && styles.inputError}`}>
             <LuAtSign className={styles.mailIcon} />
             <input
               type="text"
@@ -69,14 +86,13 @@ const Signup = () => {
               name="email"
               value={userData.email}
               onChange={(event) => handleChange(event, setUserData)}
-              required
             />
           </div>
 
           <div className={styles.flexColumn}>
             <label>Password</label>
           </div>
-          <div className={styles.inputForm}>
+          <div className={`${styles.inputForm} ${hasError.email && styles.inputError}`}>
             <GoLock className={styles.icon} />
             <input
               type="password"
@@ -85,7 +101,6 @@ const Signup = () => {
               name="password"
               value={userData.password}
               onChange={(event) => handleChange(event, setUserData)}
-              required
             />
           </div>
           {isLoading && (

@@ -41,6 +41,7 @@ const fetchUserDetails = async (userId) => {
 const loginUser = async (userData, setIsLoading, setUserData, navigate) => {
   try {
     const validationMessage = validateUserData(userData);
+
     if (validationMessage === true) {
       setIsLoading(true);
       const response = await axios.post(

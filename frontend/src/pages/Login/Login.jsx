@@ -12,6 +12,7 @@ import {
   handleChange,
   loginUser,
   getCookie,
+  validateUserData,
 } from "./imports";
 
 /**
@@ -21,6 +22,7 @@ import {
 const Login = () => {
   const [userData, setUserData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState({email: false, password: false})
   // const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
@@ -48,7 +50,15 @@ const Login = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
+    const response = validateUserData(userData)
     loginUser(userData, setIsLoading, setUserData, navigate);
+
+    setHasError({email: false, password: false})
+
+    if(typeof response == "string"){ 
+      const fieldWithError = response.trim().split(" ")[0].toLowerCase()
+      setHasError(prevState => ({ ...prevState, [fieldWithError]: true }));
+    }
   };
 
   return (
@@ -59,7 +69,7 @@ const Login = () => {
           <div className={styles.flexColumn}>
             <label>Email</label>
           </div>
-          <div className={styles.inputForm}>
+          <div className={`${styles.inputForm} ${hasError.email && styles.inputError}`}>
             <LuAtSign className={styles.mailIcon} />
             <input
               type="text"
@@ -68,14 +78,13 @@ const Login = () => {
               name="email"
               value={userData.email}
               onChange={(event) => handleChange(event, setUserData)}
-              required
             />
           </div>
 
           <div className={styles.flexColumn}>
             <label>Password</label>
           </div>
-          <div className={styles.inputForm}>
+          <div className={`${styles.inputForm} ${hasError.password && styles.inputError}`}>
             <GoLock className={styles.icon} />
             <input
               type="password"
@@ -84,7 +93,6 @@ const Login = () => {
               name="password"
               value={userData.password}
               onChange={(event) => handleChange(event, setUserData)}
-              required
             />
           </div>
 

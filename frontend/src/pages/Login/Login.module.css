@@ -74,6 +74,10 @@
   border: 1.5px solid var(--focus-border-color);
 }
 
+.inputError{
+  border-color:var(--bg-component-red);
+}
+
 .flexRow {
   display: flex;
   flex-direction: row;
