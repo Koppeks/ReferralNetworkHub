@@ -132,7 +132,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 70%;
+  width: 100%;
+  padding: 0 15%;
+  border-radius: 12px;
+}
+
+.inputError{
+  border: 1px solid var(--bg-component-red);
 }
 
 .genderSection label {

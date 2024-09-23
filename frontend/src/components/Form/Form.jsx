@@ -1,24 +1,38 @@
+import { validateEditUserData } from "../../utility/validateUserEditInput";
+import { validateUserData } from "../../utility/validateUserInput";
 import {
   formStyles as styles,
-  useState, 
+  useState,
   useNavigate,
   generateSnackbar,
   updateUserAccountInfo,
   resetStates,
   ImageSection,
-  ResumeUpload, 
+  ResumeUpload,
   PersonalInfo,
-  ProfessionalInfo, 
+  ProfessionalInfo,
   EducationInfo,
-  SkillsExpertise, 
-  WorkHistory, 
-  Preferences, 
-  AdditionalInfo
-} from './imports'
+  SkillsExpertise,
+  WorkHistory,
+  Preferences,
+  AdditionalInfo,
+} from "./imports";
 
 const Form = () => {
   const [selectedOption, setSelectedOption] = useState("Experienced");
   const navigate = useNavigate();
+
+  const [hasErrors, setHasErrors] = useState({
+    gender: false,
+    companyName: false,
+    currentJobTitle: false,
+    industry: false,
+    yearsOfExperience: false,
+    // WIP resume and profile photo
+    // resume: " ",
+    // profilePhoto: " ",
+  });
+
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "",
     email: "",
@@ -70,6 +84,8 @@ const Form = () => {
     setSelectedOption(option);
   };
 
+  console.log(personalInfo)
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -91,19 +107,49 @@ const Form = () => {
       preferences,
       additionalInfo,
       socialLinks,
+      selectedOption
     };
-    updateUserAccountInfo(data, navigate);
 
-    resetStates(
-      setPersonalInfo,
-      setProfessionalInfo,
-      setEducation,
-      setSkillsExpertise,
-      setWorkHistory,
-      setPreferences,
-      setAdditionalInfo,
-      setSocialLinks
-    );
+    let response = validateEditUserData(data);
+
+    setHasErrors({   
+      gender: false,
+      companyName: false,
+      currentJobTitle: false,
+      industry: false,
+      yearsOfExperience: false
+    });
+
+    console.log("respuesta", response)
+
+    if (response !== true) {
+      if(selectedOption === "Fresher"){
+        setHasErrors((prevState) => ({ ...prevState, 
+          companyName: false,
+          currentJobTitle: false,
+          industry: false,
+          yearsOfExperience: false,
+        }));
+      }
+
+      response.forEach((error) => {
+        setHasErrors((prevState) => ({ ...prevState, [error.field]: true }));
+      });
+      generateSnackbar("Fill all required fields", "warning", 2000);
+    } else {
+      updateUserAccountInfo(data, navigate);
+      
+      resetStates(
+        setPersonalInfo,
+        setProfessionalInfo,
+        setEducation,
+        setSkillsExpertise,
+        setWorkHistory,
+        setPreferences,
+        setAdditionalInfo,
+        setSocialLinks
+      );
+    }
   };
 
   return (
@@ -113,6 +159,7 @@ const Form = () => {
           setProfileInfo={setPersonalInfo}
           socialLinks={socialLinks}
           setSocialLinks={setSocialLinks}
+          hasErrors={hasErrors}
         />
         <div className={styles.formSection}>
           <ResumeUpload setResume={setPersonalInfo} />
@@ -125,6 +172,7 @@ const Form = () => {
             selectedOption={selectedOption}
             professionalInfo={professionalInfo}
             setProfessionalInfo={setProfessionalInfo}
+            hasErrors={hasErrors}
           />
           <EducationInfo education={education} setEducation={setEducation} />
           <SkillsExpertise

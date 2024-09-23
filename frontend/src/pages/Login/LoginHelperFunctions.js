@@ -54,6 +54,8 @@ const loginUser = async (userData, setIsLoading, setUserData, navigate) => {
         const fetchedUserData = await fetchUserDetails(response.data.user._id);
         generateSnackbar(response.data.message, "success", 2000);
 
+        console.log(response.data)
+
         persistUser(response.data.user._id, response.data.token, "session");
 
         setUserData({ email: "", password: "" });
@@ -66,7 +68,7 @@ const loginUser = async (userData, setIsLoading, setUserData, navigate) => {
       }
       setIsLoading(false);
     } else {
-      generateSnackbar(validationMessage, "warning", 2000);
+      generateSnackbar("Fill all required fields", "warning", 2000);
     }
   } catch (err) {
     catchError(err);

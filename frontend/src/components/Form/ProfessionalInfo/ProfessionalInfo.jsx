@@ -5,6 +5,7 @@ const ProfessionalInfo = ({
   selectedOption,
   professionalInfo,
   setProfessionalInfo,
+  hasErrors
 }) => {
   return (
     <div className={styles.professionalInfo}>
@@ -49,10 +50,11 @@ const ProfessionalInfo = ({
           name="currentJobTitle"
           value={professionalInfo.currentJobTitle}
           onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ""
+          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ` ${
+            hasErrors.currentJobTitle && styles.inputError
+          } `
             }`}
           disabled={selectedOption === "Fresher"}
-          required={selectedOption === "Experienced"}
         />
         <input
           type="text"
@@ -60,10 +62,11 @@ const ProfessionalInfo = ({
           name="companyName"
           value={professionalInfo.companyName}
           onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ""
+          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
+            hasErrors.companyName && styles.inputError
+          }`
             }`}
           disabled={selectedOption === "Fresher"}
-          required={selectedOption === "Experienced"}
         />
       </div>
       <div className={styles.inputRow}>
@@ -73,10 +76,11 @@ const ProfessionalInfo = ({
           name="industry"
           value={professionalInfo.industry}
           onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ""
+          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
+            hasErrors.industry && styles.inputError
+          }`
             }`}
           disabled={selectedOption === "Fresher"}
-          required={selectedOption === "Experienced"}
         />
         <input
           type="number"
@@ -84,10 +88,11 @@ const ProfessionalInfo = ({
           name="yearsOfExperience"
           value={professionalInfo.yearsOfExperience}
           onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ""
+          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
+            hasErrors.yearsOfExperience && styles.inputError
+          }`
             }`}
           disabled={selectedOption === "Fresher"}
-          required={selectedOption === "Experienced"}
         />
       </div>
     </div>

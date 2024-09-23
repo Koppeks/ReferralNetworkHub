@@ -5,7 +5,7 @@ import {
   UserSvg,
 } from "../imports";
 
-const ImageSection = ({ setProfileInfo, socialLinks, setSocialLinks }) => {
+const ImageSection = ({ setProfileInfo, socialLinks, setSocialLinks, hasErrors }) => {
   return (
     <div className={styles.imageSection}>
       <div className={styles.uploadImage}>
@@ -38,14 +38,16 @@ const ImageSection = ({ setProfileInfo, socialLinks, setSocialLinks }) => {
           className={styles.inputField}
         />
       </div>
-      <div className={styles.genderSection}>
+
+      <div className={`${styles.genderSection} ${
+            hasErrors.gender && styles.inputError
+          }`}>
         <label className={styles1.radioLabel}>
           <input
             type="radio"
             name="gender"
             value="male"
             onChange={(e) => handleChange(e, setProfileInfo)}
-            required
           />
           Male
         </label>
@@ -55,7 +57,6 @@ const ImageSection = ({ setProfileInfo, socialLinks, setSocialLinks }) => {
             name="gender"
             value="female"
             onChange={(e) => handleChange(e, setProfileInfo)}
-            required
           />
           Female
         </label>
@@ -65,7 +66,6 @@ const ImageSection = ({ setProfileInfo, socialLinks, setSocialLinks }) => {
             name="gender"
             value="other"
             onChange={(e) => handleChange(e, setProfileInfo)}
-            required
           />
           Other
         </label>

@@ -79,6 +79,11 @@
   border-color:var(--bg-component-red);
 }
 
+.errorMessage{
+  color: var(--bg-component-red);
+  position: static;
+}
+
 .flexRow {
   display: flex;
   flex-direction: row;

@@ -1,5 +1,6 @@
 import { axios, catchError, generateSnackbar } from "./imports";
 import { Config } from "../../App";
+import { getCookie } from "../Navbar/imports";
 
 const handleChange = (event, setState) => {
   setState((prev) => ({
@@ -13,9 +14,15 @@ const handleChange = (event, setState) => {
 const updateUserAccountInfo = async (
   data,
   navigate,
-  token = localStorage.getItem("token"),
+  token = getCookie("token"),
   userId = localStorage.getItem("userId")
 ) => {
+
+  if (!token) {
+    generateSnackbar("Authentication token missing", "error", 2000);
+    return;
+  }
+
   try {
     let response = await axios.patch(
       `${Config?.endpoint}user/details/${userId}`,
@@ -24,6 +31,8 @@ const updateUserAccountInfo = async (
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+
+    
 
     if (response?.status === 200) {
       generateSnackbar(response?.data?.message, "success", 2000);

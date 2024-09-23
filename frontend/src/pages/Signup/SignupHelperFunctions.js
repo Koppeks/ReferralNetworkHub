@@ -34,7 +34,7 @@ const registerUser = async (userData, setIsLoading, setUserData, navigate) => {
       }
       setIsLoading(false);
     } else {
-      generateSnackbar(validationMessage, "warning", 2000);
+      generateSnackbar("Fill all required fields", "warning", 2000);
     }
   } catch (err) {
     catchError(err);

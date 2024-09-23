@@ -22,7 +22,7 @@ import {
 const Login = () => {
   const [userData, setUserData] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState({email: false, password: false})
+  const [hasError, setHasError] = useState({});
   // const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
@@ -50,14 +50,17 @@ const Login = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    const response = validateUserData(userData)
+    const response = validateUserData(userData);
     loginUser(userData, setIsLoading, setUserData, navigate);
 
-    setHasError({email: false, password: false})
+    //Clean the list of errors
+    setHasError({});
 
-    if(typeof response == "string"){ 
-      const fieldWithError = response.trim().split(" ")[0].toLowerCase()
-      setHasError(prevState => ({ ...prevState, [fieldWithError]: true }));
+    //Loop through the list of errors and set the state
+    if(response !== true){
+      response.forEach(error => {
+        setHasError(prevState => ({ ...prevState, [error.field]: error.errMsg }));
+      });
     }
   };
 
@@ -69,7 +72,11 @@ const Login = () => {
           <div className={styles.flexColumn}>
             <label>Email</label>
           </div>
-          <div className={`${styles.inputForm} ${hasError.email && styles.inputError}`}>
+          <div
+            className={`${styles.inputForm} ${
+              hasError.email && styles.inputError
+            }`}
+          >
             <LuAtSign className={styles.mailIcon} />
             <input
               type="text"
@@ -80,11 +87,17 @@ const Login = () => {
               onChange={(event) => handleChange(event, setUserData)}
             />
           </div>
+          {hasError.email && <small className={styles.errorMessage}>{hasError.email}</small>}
 
           <div className={styles.flexColumn}>
             <label>Password</label>
           </div>
-          <div className={`${styles.inputForm} ${hasError.password && styles.inputError}`}>
+          <div
+            className={`${styles.inputForm} ${
+              hasError.password && styles.inputError
+            }`}
+            title={hasError.password}
+          >
             <GoLock className={styles.icon} />
             <input
               type="password"
@@ -95,7 +108,7 @@ const Login = () => {
               onChange={(event) => handleChange(event, setUserData)}
             />
           </div>
-
+          {hasError.password && <small className={styles.errorMessage}>{hasError.password}</small>}
           <div className={styles.flexRow}>
             {/* <div>
               <input

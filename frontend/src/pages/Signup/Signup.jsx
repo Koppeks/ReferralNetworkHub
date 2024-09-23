@@ -24,11 +24,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const [hasError, setHasError] = useState({
-    name: false,
-    email: false,
-    password: false
-  })
+  const [hasError, setHasError] = useState({})
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -42,15 +38,15 @@ const Signup = () => {
     const response = validateUserData(userData)
     registerUser(userData, setIsLoading, setUserData, navigate);
 
-    setHasError({
-      name: false,
-      email: false,
-      password: false
-    })
+    //Clean the list of errors
 
-    if(typeof response == "string"){ 
-      const fieldWithError = response.trim().split(" ")[0].toLowerCase()
-      setHasError(prevState => ({ ...prevState, [fieldWithError]: true }));
+    setHasError({});
+
+    //Loop through the list of errors and set the state
+    if(response !== true){
+      response.forEach(error => {
+        setHasError(prevState => ({ ...prevState, [error.field]: error.errMsg }));
+      });
     }
   };
 
@@ -73,6 +69,7 @@ const Signup = () => {
               onChange={(event) => handleChange(event, setUserData)}
             />
           </div>
+          {hasError.name && <small className={styles.errorMessage}>{hasError.name}</small>}
 
           <div className={styles.flexColumn}>
             <label>Email</label>
@@ -88,11 +85,12 @@ const Signup = () => {
               onChange={(event) => handleChange(event, setUserData)}
             />
           </div>
+          {hasError.email && <small className={styles.errorMessage}>{hasError.email}</small>}
 
           <div className={styles.flexColumn}>
             <label>Password</label>
           </div>
-          <div className={`${styles.inputForm} ${hasError.email && styles.inputError}`}>
+          <div className={`${styles.inputForm} ${hasError.password && styles.inputError}`}>
             <GoLock className={styles.icon} />
             <input
               type="password"
@@ -103,6 +101,7 @@ const Signup = () => {
               onChange={(event) => handleChange(event, setUserData)}
             />
           </div>
+          {hasError.password && <small className={styles.errorMessage}>{hasError.password}</small>}
           {isLoading && (
             <div style={{ marginTop: "10px" }}>
               <LinearProgress color="success" />

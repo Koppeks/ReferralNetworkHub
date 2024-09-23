@@ -41,6 +41,7 @@
 }
 
 .inputForm {
+  position: relative;
   border: 1.5px solid var(--input-border-color);
   border-radius: 10px;
   height: 50px;
@@ -76,6 +77,11 @@
 
 .inputError{
   border-color:var(--bg-component-red);
+}
+
+.errorMessage{
+  color: var(--bg-component-red);
+  position: static;
 }
 
 .flexRow {
