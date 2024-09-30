@@ -10,11 +10,19 @@
 
   //List of validations
   const isRequired = (value) => value ? true : "is required!"
+  const isPhone = (value) => 
+    /^(\+\d{1,3})?[-.\s]?(\(?\d{3}\)?)[-.\s]?\d{3}[-.\s]?\d{4}$/.test(value) || value === ""
+    ? true 
+    : "needs to be a valid number";
+  const isURL = (value) => 
+    /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\w-]*)*\/?(\?.*)?(#.*)?$/.test(value) || value === ""
+    ? true 
+    : "needs to be a valid URL";
 
 //Will only work with login and signup
 const validateEditUserData = (data) => {
 
-  let { personalInfo, professionalInfo, selectedOption } = data;
+  let { personalInfo, professionalInfo, selectedOption, socialLinks } = data;
   console.log("The complete data inside validateEditUserData: ", data)
   //Loop that will run the list of validations assigned to each field
   let listOfErrors = []
@@ -22,17 +30,26 @@ const validateEditUserData = (data) => {
     for (let validation of validations) {
       const result = validation(value);
       console.log(result)
-      if (result !== true) return listOfErrors.push({field, value , errMsg: `${field} ${result}`});
+      // Handle multiple types of results:
+      // - Exact names like URL's should be left untouched.
+      // - Others should be split to better readeability.
+      if (result === "needs to be a valid URL") return listOfErrors.push({field, value , errMsg: `${field.replace("Url", "")} ${result}`});
+      if (result !== true) return listOfErrors.push({field, value , errMsg: `${field.split(/(?=[A-Z])/).join(" ").toLowerCase()} ${result}`});
     }
     return true;
   };
 
-  //All the posible validations that will be processed 
+  // All the posible validations that will be processed 
   const fieldValidations = [
     data.personalInfo.gender !== undefined && {
       field: "gender",
       value: personalInfo.gender,
       validations: [isRequired],
+    },
+    data.personalInfo.phoneNumber !== undefined && {
+      field: "phoneNumber",
+      value: personalInfo.phoneNumber,
+      validations: [isPhone]
     },
     data.professionalInfo.companyName !== undefined && selectedOption !== "Fresher" && {
       field: "companyName",
@@ -54,6 +71,21 @@ const validateEditUserData = (data) => {
       value: professionalInfo.yearsOfExperience,
       validations: [isRequired]
     },
+    data.socialLinks.linkedInUrl !== undefined && {
+      field:"linkedInUrl",
+      value: socialLinks.linkedInUrl,
+      validations:[isURL]
+    },
+    data.socialLinks.gitHubUrl !== undefined && {
+      field:"gitHubUrl",
+      value: socialLinks.gitHubUrl,
+      validations:[isURL]
+    },
+    data.socialLinks.websiteUrl !== undefined && {
+      field:"websiteUrl",
+      value: socialLinks.websiteUrl,
+      validations:[isURL]
+    }
   ].filter(Boolean);
 
   //Loop through each validation and make a list

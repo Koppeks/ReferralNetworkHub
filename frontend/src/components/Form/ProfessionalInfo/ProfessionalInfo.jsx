@@ -7,6 +7,8 @@ const ProfessionalInfo = ({
   setProfessionalInfo,
   hasErrors
 }) => {
+
+  console.log(hasErrors)
   return (
     <div className={styles.professionalInfo}>
       <div className={styles1.header}>
@@ -44,44 +46,54 @@ const ProfessionalInfo = ({
         </span>
       </Tooltip>
       <div className={styles.inputRow}>
-        <input
-          type="text"
-          placeholder="Current Job Title"
-          name="currentJobTitle"
-          value={professionalInfo.currentJobTitle}
-          onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ` ${
-            hasErrors.currentJobTitle && styles.inputError
-          } `
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="Current Job Title"
+            name="currentJobTitle"
+            value={professionalInfo.currentJobTitle}
+            onChange={(e) => handleChange(e, setProfessionalInfo)}
+            className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : ` ${
+              hasErrors.currentJobTitle && styles.inputError
+              } `
             }`}
-          disabled={selectedOption === "Fresher"}
-        />
-        <input
-          type="text"
-          placeholder="Company Name"
-          name="companyName"
-          value={professionalInfo.companyName}
-          onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
-            hasErrors.companyName && styles.inputError
-          }`
-            }`}
-          disabled={selectedOption === "Fresher"}
-        />
+            disabled={selectedOption === "Fresher"}
+          />
+          {hasErrors.currentJobTitle && <small className={styles.errorMessage}>{hasErrors.currentJobTitle}</small>}
+        </div>
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="Company Name"
+            name="companyName"
+            value={professionalInfo.companyName}
+            onChange={(e) => handleChange(e, setProfessionalInfo)}
+            className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
+              hasErrors.companyName && styles.inputError
+            }`
+              }`}
+            disabled={selectedOption === "Fresher"}
+          />
+          {hasErrors.companyName && <small className={styles.errorMessage}>{hasErrors.companyName}</small>}
+        </div>
       </div>
       <div className={styles.inputRow}>
-        <input
-          type="text"
-          placeholder="Industry"
-          name="industry"
-          value={professionalInfo.industry}
-          onChange={(e) => handleChange(e, setProfessionalInfo)}
-          className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
-            hasErrors.industry && styles.inputError
-          }`
-            }`}
-          disabled={selectedOption === "Fresher"}
-        />
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            placeholder="Industry"
+            name="industry"
+            value={professionalInfo.industry}
+            onChange={(e) => handleChange(e, setProfessionalInfo)}
+            className={`${styles.inputField} ${selectedOption === "Fresher" ? styles.disabledInput : `${
+              hasErrors.industry && styles.inputError
+            }`
+              }`}
+            disabled={selectedOption === "Fresher"}
+          />
+          {hasErrors.industry && <small className={styles.errorMessage}>{hasErrors.industry}</small>}
+        </div>
+        <div className={styles.inputContainer}>
         <input
           type="number"
           placeholder="Years of Experience"
@@ -94,6 +106,8 @@ const ProfessionalInfo = ({
             }`}
           disabled={selectedOption === "Fresher"}
         />
+        {hasErrors.yearsOfExperience && <small className={styles.errorMessage}>{hasErrors.yearsOfExperience}</small>}
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { validateEditUserData } from "../../utility/validateUserEditInput";
-import { validateUserData } from "../../utility/validateUserInput";
 import {
   formStyles as styles,
   useState,
@@ -22,16 +21,7 @@ const Form = () => {
   const [selectedOption, setSelectedOption] = useState("Experienced");
   const navigate = useNavigate();
 
-  const [hasErrors, setHasErrors] = useState({
-    gender: false,
-    companyName: false,
-    currentJobTitle: false,
-    industry: false,
-    yearsOfExperience: false,
-    // WIP resume and profile photo
-    // resume: " ",
-    // profilePhoto: " ",
-  });
+  const [hasErrors, setHasErrors] = useState({});
 
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "",
@@ -112,28 +102,13 @@ const Form = () => {
 
     let response = validateEditUserData(data);
 
-    setHasErrors({   
-      gender: false,
-      companyName: false,
-      currentJobTitle: false,
-      industry: false,
-      yearsOfExperience: false
-    });
+    setHasErrors({});
 
-    console.log("respuesta", response)
-
-    if (response !== true) {
-      if(selectedOption === "Fresher"){
-        setHasErrors((prevState) => ({ ...prevState, 
-          companyName: false,
-          currentJobTitle: false,
-          industry: false,
-          yearsOfExperience: false,
-        }));
-      }
-
-      response.forEach((error) => {
-        setHasErrors((prevState) => ({ ...prevState, [error.field]: true }));
+    
+    //Loop through the list of errors and set the state
+    if(response !== true){
+      response.forEach(error => {
+        setHasErrors(prevState => ({ ...prevState, [error.field]: error.errMsg }));
       });
       generateSnackbar("Fill all required fields", "warning", 2000);
     } else {
@@ -166,6 +141,7 @@ const Form = () => {
           <PersonalInfo
             personalInfo={personalInfo}
             setPersonalInfo={setPersonalInfo}
+            hasErrors={hasErrors}
           />
           <ProfessionalInfo
             handleOptionClick={handleOptionClick}

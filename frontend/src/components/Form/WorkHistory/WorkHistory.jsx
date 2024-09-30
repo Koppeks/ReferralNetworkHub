@@ -1,4 +1,11 @@
-import { formStyles as styles, workHistoryStyles as styles1, FiInfo, FiTrash2, Tooltip, DatePicker, } from "../imports";
+import {
+  formStyles as styles,
+  workHistoryStyles as styles1,
+  FiInfo,
+  FiTrash2,
+  Tooltip,
+  DatePicker,
+} from "../imports";
 import "react-datepicker/dist/react-datepicker.css";
 
 const WorkHistory = ({
@@ -78,67 +85,75 @@ const WorkHistory = ({
           <div className={styles1.entryHeader}>
             {index > 0 && <p>Work {index + 1}</p>}
             <div className={styles.inputRow}>
-              <input
-                type="text"
-                placeholder="Previous Job Title"
-                className={`${styles.inputField} ${
-                  isDisabled ? styles.disabledInput : ""
-                }`}
-                value={field.previousJobTitle}
-                disabled={isDisabled}
-                onChange={(e) => {
-                  const updatedFields = [...workHistoryFields];
-                  updatedFields[index].previousJobTitle = e.target.value;
-                  setWorkHistoryFields(updatedFields);
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Company Name"
-                className={`${styles.inputField} ${
-                  isDisabled ? styles.disabledInput : ""
-                }`}
-                value={field.companyName}
-                disabled={isDisabled}
-                onChange={(e) => {
-                  const updatedFields = [...workHistoryFields];
-                  updatedFields[index].companyName = e.target.value;
-                  setWorkHistoryFields(updatedFields);
-                }}
-              />
+              <div className={styles.inputContainer}>
+                <input
+                  type="text"
+                  placeholder="Previous Job Title"
+                  className={`${styles.inputField} ${
+                    isDisabled ? styles.disabledInput : ""
+                  }`}
+                  value={field.previousJobTitle}
+                  disabled={isDisabled}
+                  onChange={(e) => {
+                    const updatedFields = [...workHistoryFields];
+                    updatedFields[index].previousJobTitle = e.target.value;
+                    setWorkHistoryFields(updatedFields);
+                  }}
+                />
+              </div>
+              <div className={styles.inputContainer}>
+                <input
+                  type="text"
+                  placeholder="Company Name"
+                  className={`${styles.inputField} ${
+                    isDisabled ? styles.disabledInput : ""
+                  }`}
+                  value={field.companyName}
+                  disabled={isDisabled}
+                  onChange={(e) => {
+                    const updatedFields = [...workHistoryFields];
+                    updatedFields[index].companyName = e.target.value;
+                    setWorkHistoryFields(updatedFields);
+                  }}
+                />
+              </div>
             </div>
-            <div className={styles.inputRow}>
-              <DatePicker
-                type="text"
-                selectsRange
-                startDate={parseEmploymentDates(field.employmentDates)[0]}
-                endDate={parseEmploymentDates(field.employmentDates)[1]}
-                onChange={(dates) => handleDateChange(dates, index)}
-                disabled={isDisabled}
-                dateFormat="MMM yyyy"
-                className={`${styles.inputField} ${
-                  isDisabled ? styles.disabledInput : ""
-                }`}
-                value={field.employmentDates}
-                placeholderText="Select Employment Dates"
-                showMonthYearPicker
-                showFullMonthYearPicker
-              />
-              <input
-                type="text"
-                placeholder="Responsibilities and Achievements (Optional)"
-                className={`${styles.inputField} ${
-                  isDisabled ? styles.disabledInput : ""
-                }`}
-                value={field.responsibilitiesAchievements}
-                disabled={isDisabled}
-                onChange={(e) => {
-                  const updatedFields = [...workHistoryFields];
-                  updatedFields[index].responsibilitiesAchievements =
-                    e.target.value;
-                  setWorkHistoryFields(updatedFields);
-                }}
-              />
+              <div className={styles.inputRow}>
+              <div className={styles.inputContainer}>
+                <DatePicker
+                  type="text"
+                  selectsRange
+                  startDate={parseEmploymentDates(field.employmentDates)[0]}
+                  endDate={parseEmploymentDates(field.employmentDates)[1]}
+                  onChange={(dates) => handleDateChange(dates, index)}
+                  disabled={isDisabled}
+                  dateFormat="MMM yyyy"
+                  className={`${styles.inputField} ${
+                    isDisabled ? styles.disabledInput : ""
+                  }`}
+                  value={field.employmentDates}
+                  placeholderText="Select Employment Dates"
+                  showMonthYearPicker
+                  showFullMonthYearPicker
+                />
+              </div>
+              <div className={styles.inputContainer}>
+                <input
+                  type="text"
+                  placeholder="Responsibilities and Achievements (Optional)"
+                  className={`${styles.inputField} ${
+                    isDisabled ? styles.disabledInput : ""
+                  }`}
+                  value={field.responsibilitiesAchievements}
+                  disabled={isDisabled}
+                  onChange={(e) => {
+                    const updatedFields = [...workHistoryFields];
+                    updatedFields[index].responsibilitiesAchievements =
+                      e.target.value;
+                    setWorkHistoryFields(updatedFields);
+                  }}
+                />
+              </div>
             </div>
             {index > 0 && (
               <div
